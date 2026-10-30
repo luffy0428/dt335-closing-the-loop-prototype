@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HostelPulse · LoopFix — Design Thinking P02 Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Global Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <div class="brand-logo">LP</div>
+        <div class="brand-info">
+          <h1>HostelPulse <span class="brand-badge">LoopFix</span></h1>
+          <p>Closing the Loop on Hostel Maintenance · P02 Design Thinking CA2</p>
+        </div>
+      </div>
+
+      <!-- Multi-Role Switcher Tabs -->
+      <nav class="role-nav" aria-label="Role Navigation">
+        <button class="role-tab-btn active" data-view="student">
+          <span>🎓</span> Hosteller (Student)
+        </button>
+        <button class="role-tab-btn" data-view="technician">
+          <span>🔧</span> Technician Field View
+          <span class="badge-count" id="tech-badge-count">2</span>
+        </button>
+        <button class="role-tab-btn" data-view="warden">
+          <span>🏢</span> Warden & Admin
+          <span class="badge-count" id="warden-badge-count" style="background:#f59e0b">1</span>
+        </button>
+        <button class="role-tab-btn" data-view="design-thinking">
+          <span>💡</span> CA2 Journey Map & Research
+        </button>
+      </nav>
+
+      <!-- Simulation & Demo Tools -->
+      <div class="header-actions">
+        <button class="btn-demo" id="btn-simulate-step" title="Simulate next maintenance milestone">
+          <span>⚡</span> Simulate Next Step
+        </button>
+        <button class="btn-demo" id="btn-reset-data" title="Reset to initial seed data">
+          <span>↺</span> Reset Demo
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Wrapper -->
+  <main class="main-wrapper">
+
+    <!-- =========================================================================
+         VIEW 1: HOSTELLER (STUDENT) PORTAL
+         ========================================================================= -->
+    <section id="student-view" class="view-section active-view">
+      
+      <!-- Student Profile & Action Hero -->
+      <div class="portal-hero">
+        <div class="portal-hero-text">
+          <h2>Welcome back, Aryan!</h2>
+          <p>Track maintenance requests with real-time status, technician ETA, and mutual OTP closure verification.</p>
+          <div class="user-tag-pill">
+            <span>📍 Block-B, Room 304</span> • <span>Reg: 12204592</span> • <span>Active Hosteller</span>
+          </div>
+        </div>
+        <button class="btn-primary-action" id="btn-open-new-ticket">
+          <span style="font-size:1.2rem;">+</span> Report New Fault
+        </button>
+      </div>
+
+      <div class="content-grid">
+        <!-- Left: Live Active Complaint Card -->
+        <div class="primary-column">
+          <div class="card-panel active-ticket-card" id="student-active-ticket-container">
+            <!-- Dynamically populated by app.js -->
+          </div>
+
+          <!-- All Past & Active Requests -->
+          <div class="card-panel">
+            <div class="card-panel-header">
+              <h3 class="card-panel-title">📋 My Maintenance Tickets</h3>
+              <div style="display:flex; gap:0.5rem;" id="student-filter-chips">
+                <button class="cluster-btn active" data-filter="all">All</button>
+                <button class="cluster-btn" data-filter="active">Active</button>
+                <button class="cluster-btn" data-filter="escalated">Escalated</button>
+                <button class="cluster-btn" data-filter="closed">Closed</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="styled-table" id="student-tickets-table">
+                <thead>
+                  <tr>
+                    <th>Ticket ID</th>
+                    <th>Issue</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="student-tickets-tbody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Helpful Hosteller Guidelines & SLA Explainer -->
+        <div class="secondary-column">
+          <div class="card-panel">
+            <h3 class="card-panel-title" style="margin-bottom:1rem;">🛡️ How LoopFix Protects You</h3>
+            <ul class="bullet-list" style="margin-bottom:1.25rem;">
+              <li><strong>Zero Ghost Closures:</strong> Technicians cannot mark a job 'Done' without your personal 4-digit OTP.</li>
+              <li><strong>Live SLA Windows:</strong> Guaranteed 4h window for Urgent faults; 24h for normal repairs.</li>
+              <li><strong>1-Click Escalation:</strong> If a job sits stalled without technician communication, escalate directly to the Chief Warden.</li>
+              <li><strong>Queue Transparency:</strong> See your exact place in the maintenance roster.</li>
+            </ul>
+            <div style="background:var(--neutral-50); border:1px solid var(--neutral-200); border-radius:var(--radius-md); padding:1rem;">
+              <div style="font-size:0.75rem; font-weight:700; color:var(--neutral-500); text-transform:uppercase;">Hostel Helpline</div>
+              <div style="font-weight:700; color:var(--neutral-900); font-size:0.95rem; margin-top:0.25rem;">Warden Office: 01824-500200</div>
+              <div style="font-size:0.775rem; color:var(--neutral-500);">Emergency Electrical: Ext. 404</div>
+            </div>
+          </div>
+
+          <div class="card-panel">
+            <h3 class="card-panel-title">⚡ Quick Status Simulator</h3>
+            <p style="font-size:0.8rem; color:var(--neutral-500); margin-bottom:1rem;">
+              Use these shortcuts during your presentation to demonstrate different states in real-time:
+            </p>
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+              <button class="btn-demo" id="sim-advance-stage" style="justify-content:center;">Advance Active Ticket Stage</button>
+              <button class="btn-demo" id="sim-trigger-escalation" style="justify-content:center; color:var(--danger)">Simulate 24h SLA Breach</button>
+              <button class="btn-demo" id="sim-parts-hold" style="justify-content:center; color:var(--warning-text)">Simulate Spare Parts Hold</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 2: TECHNICIAN FIELD JOB CARD PORTAL
+         ========================================================================= -->
+    <section id="technician-view" class="view-section">
+      <!-- Technician Toolbar & Identity -->
+      <div class="tech-toolbar">
+        <div class="tech-profile-select">
+          <label class="form-label" style="margin-bottom:0;" for="tech-select">Active Technician:</label>
+          <select id="tech-select" class="select-tech-dropdown">
+            <option value="tech_02">Suresh Patil (Plumbing) - 1 Active Job</option>
+            <option value="tech_01">Ramesh Kumar (Electrical) - 2 Active Jobs</option>
+            <option value="tech_03">Mohan Lal (Carpentry & Locks) - 1 Stalled Job</option>
+            <option value="tech_04">Abdul Qadir (Sanitation) - Available</option>
+          </select>
+        </div>
+
+        <!-- Route & Floor Clustering -->
+        <div class="tech-cluster-tabs" id="tech-block-filters">
+          <button class="cluster-btn active" data-cluster="all">All Blocks</button>
+          <button class="cluster-btn" data-cluster="Block-B">Block-B Cluster (3)</button>
+          <button class="cluster-btn" data-cluster="Block-A">Block-A Cluster (1)</button>
+          <button class="cluster-btn" data-cluster="Block-C">Block-C Cluster (0)</button>
+        </div>
+      </div>
+
+      <!-- Job Cards Container -->
+      <div id="tech-jobs-container">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 3: WARDEN & MAINTENANCE ADMIN OVERSIGHT
+         ========================================================================= -->
+    <section id="warden-view" class="view-section">
+      <!-- High Level Real-time KPIs -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">TOTAL COMPLAINTS TODAY</div>
+          <div class="kpi-val" id="kpi-total">4</div>
+          <div class="kpi-sub">Across 3 hostel blocks</div>
+        </div>
+        <div class="kpi-card kpi-warning">
+          <div class="kpi-label">ACTIVE / IN-PROGRESS</div>
+          <div class="kpi-val" id="kpi-active">2</div>
+          <div class="kpi-sub">Technicians on site</div>
+        </div>
+        <div class="kpi-card kpi-success">
+          <div class="kpi-label">FIRST-TIME FIX RATE</div>
+          <div class="kpi-val" id="kpi-ftfr">91.4%</div>
+          <div class="kpi-sub">+18% since LoopFix rollout</div>
+        </div>
+        <div class="kpi-card kpi-danger">
+          <div class="kpi-label">SLA STALLED / BREACHED</div>
+          <div class="kpi-val" id="kpi-stalled">1</div>
+          <div class="kpi-sub">Requires supervisor action</div>
+        </div>
+      </div>
+
+      <!-- Automated Watchdogs: Stalled Complaints & 14-Day Repeat Detection -->
+      <div class="alert-card-warning" id="warden-stall-alert">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="font-size:1.5rem;">⚠️</span>
+          <div>
+            <strong style="color:#92400e;">SLA Stall Alert: Ticket TICK-2038 (Room 408, Block-A)</strong>
+            <p style="font-size:0.8rem; color:#78350f;">Balcony door latch pending for > 28 hours without progress update. Hosteller escalated.</p>
+          </div>
+        </div>
+        <button class="btn-job btn-job-start" onclick="LoopFixApp.openReassignModal('TICK-2038')">Fast-Track / Reassign</button>
+      </div>
+
+      <div class="repeat-card-box">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <span style="font-size:1.3rem;">🔁</span>
+            <div>
+              <strong style="color:#9d174d;">14-Day Repeat Complaint Detected: Room 112, Block-B</strong>
+              <p style="font-size:0.8rem; color:#831843;">Fan regulator burned out again within 9 days of prior repair. Recommend root cause check on room electrical circuit.</p>
+            </div>
+          </div>
+          <span class="badge" style="background:#fbcfe8; color:#9d174d; font-weight:700;">Repeat Flagged</span>
+        </div>
+      </div>
+
+      <!-- Technician Capacity & Balance Table -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3 class="card-panel-title">👥 Technician Workload & Roster Balancing</h3>
+          <span style="font-size:0.8rem; color:var(--neutral-500);">Live synchronization</span>
+        </div>
+        <div class="table-responsive">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Technician</th>
+                <th>Trade</th>
+                <th>Active Jobs</th>
+                <th>Total Fixed</th>
+                <th>Student Rating</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="warden-tech-table">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- All Master Complaints Table -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3 class="card-panel-title">🗂️ Central Complaint Master Log</h3>
+          <input type="text" id="warden-search-input" placeholder="Search by Room, ID, or Keyword..." class="form-input" style="max-width:280px; padding:0.4rem 0.8rem; font-size:0.8rem;">
+        </div>
+        <div class="table-responsive">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Hosteller</th>
+                <th>Location</th>
+                <th>Fault Details</th>
+                <th>Assigned Tech</th>
+                <th>SLA Countdown</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="warden-master-tbody">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 4: DESIGN THINKING ARTIFACTS & RESEARCH SHOWCASE
+         ========================================================================= -->
+    <section id="design-thinking-view" class="view-section">
+      <div class="dt-hero">
+        <h2>INT335 CA2 Project · Closing the Loop</h2>
+        <p>
+          Problem P02: "Hostel Maintenance Complaints That Go Nowhere". Below is the Design Thinking synthesis, empathy research, personas, journey mapping, and idea screening matrix that drove the LoopFix architecture.
+        </p>
+      </div>
+
+      <!-- User Personas -->
+      <div class="persona-grid">
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="brand-logo" style="background:var(--primary);">AS</div>
+            <div>
+              <h3 style="font-size:1.15rem; font-weight:800;">Aryan Sharma</h3>
+              <p style="font-size:0.8rem; color:var(--neutral-500);">2nd Year B.Tech Hosteller · Block-B</p>
+            </div>
+          </div>
+          <div class="persona-quote">
+            "I filed a ticket 4 days ago about my water geyser. I had no idea if anyone read it, so I had to personally go to the warden's office during study hours."
+          </div>
+          <h4 style="font-size:0.85rem; margin-bottom:0.5rem; color:var(--danger-text);">Key Pain Points:</h4>
+          <ul class="bullet-list" style="margin-bottom:1rem;">
+            <li>Zero feedback loop or ETA after filing tickets.</li>
+            <li>Technicians closing tickets without visiting ("Ghost closures").</li>
+            <li>Must stay locked in room waiting uncertainly.</li>
+            <li>Forced into duplicate complaints out of anxiety.</li>
+          </ul>
+          <h4 style="font-size:0.85rem; margin-bottom:0.5rem; color:var(--success-text);">Design Interventions:</h4>
+          <ul class="bullet-list">
+            <li>Mutual 4-digit OTP closure verification.</li>
+            <li>Live queue position and SLA countdown window.</li>
+            <li>1-click direct escalation when ticket stalls.</li>
+          </ul>
+        </div>
+
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="brand-logo" style="background:var(--secondary);">RK</div>
+            <div>
+              <h3 style="font-size:1.15rem; font-weight:800;">Ramesh Kumar</h3>
+              <p style="font-size:0.8rem; color:var(--neutral-500);">Senior Electrician · Maintenance Staff</p>
+            </div>
+          </div>
+          <div class="persona-quote">
+            "Students think we sit idle, but our paper job list is scattered across 4 blocks with no inventory tracking. When parts run out, we get blamed."
+          </div>
+          <h4 style="font-size:0.85rem; margin-bottom:0.5rem; color:var(--danger-text);">Key Pain Points:</h4>
+          <ul class="bullet-list" style="margin-bottom:1rem;">
+            <li>Juggling random paper slips with conflicting priorities.</li>
+            <li>Wasting hours walking back and forth without floor grouping.</li>
+            <li>Accused of delays while waiting for central store spare parts.</li>
+            <li>Students not available in rooms during unannounced visits.</li>
+          </ul>
+          <h4 style="font-size:0.85rem; margin-bottom:0.5rem; color:var(--success-text);">Design Interventions:</h4>
+          <ul class="bullet-list">
+            <li>Floor & block route-clustered mobile job cards.</li>
+            <li>One-tap "Spare Parts Pause" with automatic student notification.</li>
+            <li>Photo-proof upload & OTP sign-off eliminates disputes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Journey Map Comparison -->
+      <div class="card-panel">
+        <h3 class="card-panel-title">🗺️ User Journey Map: Broken Loop vs. LoopFix Closed Loop</h3>
+        <p style="font-size:0.825rem; color:var(--neutral-500); margin-bottom:1rem;">
+          Tracing the emotional trajectory of a hostel maintenance request before and after the design intervention.
+        </p>
+        <div class="table-responsive">
+          <table class="journey-map-table">
+            <thead>
+              <tr>
+                <th style="width:18%;">Lifecycle Stage</th>
+                <th style="width:36%;">Traditional Flow (Broken Loop)</th>
+                <th style="width:36%;">LoopFix Flow (Closed Loop)</th>
+                <th style="width:10%;">Impact</th>
+              </tr>
+            </thead>
+            <tbody id="dt-journey-tbody">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Point-of-View & How-Might-We -->
+      <div class="card-panel">
+        <h3 class="card-panel-title">🎯 POV & How-Might-We (HMW) Statements</h3>
+        <div style="background:var(--neutral-50); border-left:4px solid var(--primary); padding:1rem 1.25rem; border-radius:0 var(--radius-md) var(--radius-md) 0; margin-bottom:1.25rem;">
+          <strong style="color:var(--primary); font-size:0.9rem;">Point of View (POV):</strong>
+          <p style="font-size:0.875rem; color:var(--neutral-700); margin-top:0.25rem;">
+            Hostel residents and maintenance teams need a transparent, mutually verified workflow because unilateral status reporting causes duplicate complaints, technician distrust, and unaddressed living conditions.
+          </p>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;" id="dt-hmw-grid">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Idea Screening Matrix -->
+      <div class="card-panel">
+        <h3 class="card-panel-title">📊 Idea Screening & Feasibility Matrix</h3>
+        <div class="table-responsive">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Concept / Feature</th>
+                <th>Impact Potential</th>
+                <th>Implementation Feasibility</th>
+                <th>Design Score</th>
+              </tr>
+            </thead>
+            <tbody id="dt-screening-tbody">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- Modal: Report New Complaint -->
+  <div class="modal-overlay" id="modal-new-complaint">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Report Maintenance Fault</h3>
+        <button class="btn-close-modal" onclick="LoopFixApp.closeModal('modal-new-complaint')">&times;</button>
+      </div>
+      <form id="form-new-complaint">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <div class="category-radio-grid">
+              <label>
+                <input type="radio" name="category" value="Plumbing" class="category-radio-input" checked>
+                <div class="category-pill-label"><span>🚰</span> Plumbing</div>
+              </label>
+              <label>
+                <input type="radio" name="category" value="Electrical" class="category-radio-input">
+                <div class="category-pill-label"><span>💡</span> Electrical</div>
+              </label>
+              <label>
+                <input type="radio" name="category" value="Carpentry & Locks" class="category-radio-input">
+                <div class="category-pill-label"><span>🚪</span> Carpentry</div>
+              </label>
+              <label>
+                <input type="radio" name="category" value="Sanitation & Masonry" class="category-radio-input">
+                <div class="category-pill-label"><span>🧹</span> Sanitation</div>
+              </label>
+              <label>
+                <input type="radio" name="category" value="Network / Wi-Fi" class="category-radio-input">
+                <div class="category-pill-label"><span>📶</span> Wi-Fi</div>
+              </label>
+              <label>
+                <input type="radio" name="category" value="Appliance" class="category-radio-input">
+                <div class="category-pill-label"><span>🔌</span> Appliance</div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inp-title">Issue Summary</label>
+            <input type="text" id="inp-title" class="form-input" placeholder="e.g. Geyser leaking water from bottom valve" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inp-desc">Detailed Description</label>
+            <textarea id="inp-desc" class="form-textarea" rows="3" placeholder="Describe the fault and when it started occurring..." required></textarea>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label class="form-label" for="inp-room">Block & Room</label>
+              <input type="text" id="inp-room" class="form-input" value="Block-B, Room 304" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inp-priority">Urgency Level</label>
+              <select id="inp-priority" class="form-select">
+                <option value="Normal">Normal (24h SLA)</option>
+                <option value="Urgent">Urgent (4h SLA)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inp-slot">Preferred Technician Arrival Slot</label>
+            <select id="inp-slot" class="form-select">
+              <option value="Immediate (Safety / Flooding Risk)">Immediate (Safety / Flooding Risk)</option>
+              <option value="11:00 AM - 1:00 PM (Between classes)">11:00 AM - 1:00 PM (Between classes)</option>
+              <option value="4:00 PM - 6:00 PM (After classes)">4:00 PM - 6:00 PM (After classes)</option>
+              <option value="7:00 PM - 9:00 PM (Evening study)">7:00 PM - 9:00 PM (Evening study)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Attach Photo Proof (Optional)</label>
+            <input type="file" id="inp-photo" class="form-input" accept="image/*">
+            <small style="color:var(--neutral-500); font-size:0.75rem;">Uploading a photo helps technician bring right tools on first visit.</small>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="LoopFixApp.closeModal('modal-new-complaint')">Cancel</button>
+          <button type="submit" class="btn-submit">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Technician Job Completion & OTP Verification -->
+  <div class="modal-overlay" id="modal-complete-job">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Complete Work Order & Verify OTP</h3>
+        <button class="btn-close-modal" onclick="LoopFixApp.closeModal('modal-complete-job')">&times;</button>
+      </div>
+      <form id="form-complete-job">
+        <input type="hidden" id="complete-ticket-id">
+        <div class="modal-body">
+          <div style="background:var(--success-light); border:1px solid #86efac; border-radius:var(--radius-md); padding:0.85rem; margin-bottom:1.25rem;">
+            <strong style="color:var(--success-text); font-size:0.85rem;">🛡️ Mutual Verification Rule</strong>
+            <p style="font-size:0.775rem; color:#064e3b; margin-top:0.25rem;">
+              You must enter the 4-digit OTP provided by the hosteller in person. This guarantees the student verified the fix.
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inp-otp-verify">Enter Student 4-Digit OTP</label>
+            <input type="text" id="inp-otp-verify" class="form-input" maxlength="4" placeholder="e.g. 4829" style="font-size:1.5rem; letter-spacing:0.25em; text-align:center; font-family:monospace; font-weight:800;" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Upload Post-Repair Photo Proof</label>
+            <input type="file" id="inp-photo-after" class="form-input" accept="image/*">
+            <small style="color:var(--neutral-500); font-size:0.75rem;">Snap a photo of the repaired fixture to close ticket.</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inp-tech-notes">Technician Resolution Notes</label>
+            <textarea id="inp-tech-notes" class="form-textarea" rows="2" placeholder="e.g. Replaced leaking Teflon tape & tightened brass inlet washer. Checked flow."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="LoopFixApp.closeModal('modal-complete-job')">Cancel</button>
+          <button type="submit" class="btn-submit" style="background:var(--success);">Confirm & Close Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Spare Parts Hold Request -->
+  <div class="modal-overlay" id="modal-parts-hold">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Pause Work: Request Spare Parts</h3>
+        <button class="btn-close-modal" onclick="LoopFixApp.closeModal('modal-parts-hold')">&times;</button>
+      </div>
+      <form id="form-parts-hold">
+        <input type="hidden" id="parts-ticket-id">
+        <div class="modal-body">
+          <p style="font-size:0.85rem; color:var(--neutral-600); margin-bottom:1rem;">
+            Pausing for spare parts transparently alerts the hosteller so they know work isn't abandoned, and temporarily pauses the SLA counter.
+          </p>
+          <div class="form-group">
+            <label class="form-label" for="inp-parts-needed">Required Spare Part(s)</label>
+            <input type="text" id="inp-parts-needed" class="form-input" placeholder="e.g. 15 Amp Fan Regulator Switch, Havells" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="inp-parts-eta">Expected Part Requisition Time</label>
+            <select id="inp-parts-eta" class="form-select">
+              <option value="Central store requisition (within 2 hrs)">Central store requisition (within 2 hrs)</option>
+              <option value="Market purchase required (Tomorrow 10 AM)">Market purchase required (Tomorrow 10 AM)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="LoopFixApp.closeModal('modal-parts-hold')">Cancel</button>
+          <button type="submit" class="btn-submit" style="background:var(--warning-text); color:#fff;">Update Job Status</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Student Rating & Feedback -->
+  <div class="modal-overlay" id="modal-feedback">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Rate Maintenance Service</h3>
+        <button class="btn-close-modal" onclick="LoopFixApp.closeModal('modal-feedback')">&times;</button>
+      </div>
+      <form id="form-feedback">
+        <input type="hidden" id="feedback-ticket-id">
+        <div class="modal-body text-center" style="text-align:center;">
+          <p style="font-size:0.9rem; color:var(--neutral-600); margin-bottom:1rem;">
+            How satisfied are you with the technician's visit and repair quality?
+          </p>
+          <div style="font-size:2rem; margin-bottom:1.25rem; cursor:pointer;" id="star-rating-box">
+            <span data-star="1">★</span>
+            <span data-star="2">★</span>
+            <span data-star="3">★</span>
+            <span data-star="4">★</span>
+            <span data-star="5">★</span>
+          </div>
+          <input type="hidden" id="inp-selected-stars" value="5">
+
+          <div class="form-group" style="text-align:left;">
+            <label class="form-label" for="inp-feedback-text">Feedback Comments (Optional)</label>
+            <textarea id="inp-feedback-text" class="form-textarea" rows="2" placeholder="e.g. Fixed quickly, arrived in allotted time slot!"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="LoopFixApp.closeModal('modal-feedback')">Skip</button>
+          <button type="submit" class="btn-submit">Submit Rating</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
